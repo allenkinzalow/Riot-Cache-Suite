@@ -230,4 +230,26 @@ public class ArchiveFile {
         return -1;
     }
 
+    /**
+     * Write this archive to a directory.
+     */
+    public void writeArchive(String out) {
+        try {
+            for (RiotFile fileEntry : archiveDataFile.getFileEntries()) {
+                String path = out + pathEntries.get(fileEntry.getPathListIndex()).getPath();
+                System.out.println("Writing: " + path);
+                File directory = new File(path.substring(0, path.lastIndexOf('/')));
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                } else
+                    System.out.println(directory.getAbsoluteFile());
+                BufferedOutputStream dos = new BufferedOutputStream(new FileOutputStream(new File(path)));
+                dos.write(fileEntry.getFileData());
+                dos.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

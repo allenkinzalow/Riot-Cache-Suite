@@ -6,11 +6,14 @@ import gg.raf.suite.fs.container.ArchiveContainer;
 import gg.raf.suite.fs.container.Container;
 import gg.raf.suite.fs.container.PathContainer;
 import gg.raf.suite.fs.file.RiotPath;
+import gg.raf.suite.tasks.ExportCache;
 import gg.raf.suite.ui.RAFApplication;
 import javafx.application.Application;
 
 import java.io.File;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Allen Kinzalow on 9/24/2015.
@@ -47,6 +50,8 @@ public class RAFSuite {
      */
     public static void main(String[] args) {
         try {
+            /*ExecutorService service = Executors.newCachedThreadPool();
+            service.submit(new ExportCache());*/
             /**
              * Launch the user interface.
              */
