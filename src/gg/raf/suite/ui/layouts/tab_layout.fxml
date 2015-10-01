@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="438.0" prefWidth="792.0" style="-fx-background-color: #252525;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+    <children>
+        <SplitPane dividerPositions="0.31021437578814626" focusTraversable="true" layoutX="0.0" layoutY="0.0" prefHeight="440.0" prefWidth="795.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <SplitPane dividerPositions="0.6353211009174312" focusTraversable="true" orientation="VERTICAL" prefHeight="438.0" prefWidth="243.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <items>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                    <children>
+                                        <Label layoutX="14.0" layoutY="14.0" text="File Size* :">
+                                            <font>
+                                                <Font size="14.0" fx:id="x1" />
+                                            </font>
+                                        </Label>
+                                        <Label fx:id="fileSizeCompressed" font="$x1" layoutX="153.0" layoutY="14.0" text="0" />
+                                        <Label font="$x1" layoutX="14.0" layoutY="73.0" text="File Offset:" />
+                                        <Label fx:id="fileOffset" font="$x1" layoutX="153.0" layoutY="46.0" text="0" />
+                                        <Label font="$x1" layoutX="14.0" layoutY="44.0" text="File Size :" />
+                                        <Label fx:id="fileSize" font="$x1" layoutX="153.0" layoutY="76.0" text="0" />
+                                        <Label font="$x1" layoutX="14.0" layoutY="103.0" text="File Hash:" />
+                                        <Label fx:id="fileHash" font="$x1" layoutX="153.0" layoutY="105.0" text="0" />
+                                        <Label font="$x1" layoutX="14.0" layoutY="131.0" text="File Path:" />
+                                        <TextArea fx:id="filePath" editable="false" layoutX="14.0" layoutY="150.0" prefHeight="51.0" prefWidth="212.0" text="DATA/Characters/Ahri/Skin/base0/Animations/1.skl" wrapText="true" />
+                                        <Label layoutX="14.0" layoutY="250.0" text="* = Compressed" />
+                                        <Button fx:id="exportButton" layoutX="40.0" layoutY="210.0" mnemonicParsing="false" text="Export" />
+                                        <Button fx:id="replaceButton" layoutX="125.0" layoutY="210.0" mnemonicParsing="false" text="Replace" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="212.99990000000253" prefWidth="240.0">
+                                    <children>
+                                        <ListView fx:id="archiveList" prefHeight="215.0" prefWidth="241.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    </children>
+                                </AnchorPane>
+                            </items>
+                        </SplitPane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <TabPane layoutX="0.0" layoutY="0.0" prefHeight="439.0" prefWidth="542.0" tabClosingPolicy="UNAVAILABLE">
+                            <tabs>
+                                <Tab fx:id="rawTab" content="$null" text="Raw" />
+                                <Tab fx:id="viewTab" text="View">
+                                    <content>
+                                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    </content>
+                                </Tab>
+                            </tabs>
+                        </TabPane>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

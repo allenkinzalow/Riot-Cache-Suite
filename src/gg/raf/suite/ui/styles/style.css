@@ -1,0 +1,206 @@
+/**
+ * Pane's
+ */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+.split-pane {
+	-fx-background-color: #191919;
+}
+.pane {
+	-fx-background-color: #191919;
+}
+.anchor-pane {
+	-fx-background-color: #191919;
+}
+.split-pane:horizontal .split-pane-divider {
+	-fx-background-color: linear-gradient(to right, #303030, #323232);
+	-fx-border-color: transparent;
+}
+.split-pane:vertical .split-pane-divider {
+	-fx-background-color: linear-gradient(#303030, #323232);
+	-fx-border-color: transparent;
+}
+
+.label {
+	-fx-text-fill: #ffffff;
+}
+
+/**
+ * ListView
+ */
+.list-view .list-cell {
+	-fx-background-color: #343434;
+	-fx-text-fill: #ffffff;
+}
+.list-view .list-cell:odd {
+	-fx-background-color: #262626;
+	-fx-text-fill: #ffffff;
+}
+.list-view .list-cell:hover {
+	-fx-background-color: #454545;
+	-fx-text-fill: #ffffff;
+}
+.list-view .list-cell:selected {
+	-fx-background-color: #ED3029;
+	-fx-text-fill: #ffffff;
+}
+
+/**
+ *	Text Area
+ */
+.text-area{
+	-fx-background-radius: 0;
+	-fx-background-color: #191919;
+	-fx-border-color: #191919;
+	-fx-highlight-fill: #ED3029;
+	-fx-text-fill: #ffffff;
+}
+.text-area *.content{
+	-fx-background-radius: 0;
+	-fx-background-color: #191919;
+	-fx-border-color: #191919;
+	-fx-highlight-fill: #ED3029;
+	-fx-text-fill: #ffffff;
+}
+.text-area:focused .content{
+	-fx-background-radius: 0;
+	-fx-background-color: #191919;
+	-fx-border-color: #191919;
+	-fx-highlight-fill: #ED3029;
+}
+.text-area:selected .content{
+	-fx-background-radius: 0;
+	-fx-background-color: #191919;
+	-fx-border-color: #191919;
+	-fx-highlight-fill: #ED3029;
+}
+.text-area:focused {
+	-fx-background-radius: 0;
+	-fx-background-color: #191919;
+	-fx-border-color: #191919;
+	-fx-highlight-fill: #ED3029;
+}
+
+/**
+ * Scroll
+ */
+.scroll-bar .track {
+	-fx-background-color: #353535;
+}
+.scroll-bar .thumb {
+	-fx-background-color: #ED3029;
+}
+.scroll-bar .increment-button {
+	-fx-background-color: transparent;
+	-fx-background-radius: 0;
+}
+
+.tool-bar {
+    -fx-font-size: 12pt;
+    -fx-background-color: linear-gradient(#454545, #191919);
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: .9em 0.416667em .9em 0.416667em;
+    -fx-effect: dropshadow(two-pass-box,black,5,.2,0,0);
+}
+
+/**
+ * TreeView's
+ */
+.tree-view {
+	-fx-background-color: #191919;
+	-fx-text-fill: #F0F0F0;
+}
+.tree-cell {
+	-fx-background-color: #191919;
+	-fx-text-fill: #F0F0F0;
+}
+.tree-cell:selected {
+	-fx-background-color: #191919;
+	-fx-text-fill: #ED3029;
+}
+
+/**
+ * Menu Bar
+ */
+.menu-bar .label{
+	-fx-text-fill: #191919;
+}
+.context-menu {
+	-fx-background-color: #424242;
+}
+.menu:hover {
+  -fx-background-color: #ED3029;
+}
+.menu:openvertically:showing {
+	-fx-background-color: #ED3029;
+}
+.menu-item {
+	-fx-background-color: #424242;
+}
+.menu-item:selected {
+	-fx-background-color: #ED3029;
+}
+.menu-item .label {
+	-fx-text-fill: #ffffff;
+}
+.menu-item:hover {
+	-fx-background-color: #ED3029;
+}
+
+/**
+ *	Tab's
+ */
+.tab {
+	-fx-background-radius: 0;
+	-fx-background-color: #424242;
+	-fx-background-insets: 0 1px 0 0, 1 1px 1 1, 2 1px 0 0;
+	-fx-focus-color: transparent;
+	/*-fx-padding: 0.083333em 1px 1pz 1.0px;*/
+}
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent;
+}
+.tab .tab-label {
+	-fx-text-fill: #ffffff;
+	-fx-font-weight: bold;
+}
+.tab:selected {
+	-fx-background-radius: 0;
+	-fx-background-color: #D52B25;
+}
+.tab:focused {
+	-fx-focus-color: transparent;
+	-fx-border-color: transparent;
+}
+.tab:selected .tab-label {
+	-fx-text-fill: #ffffff;
+	-fx-font-weight: bold;
+}
+.tab:hover {
+	-fx-background-color: #ED3029;
+	-fx-border-width: 5px;
+}
+.tab:hover .tab-label {
+	-fx-text-fill: #ffffff;
+}
+
+/**
+ * Button's
+ */
+.button {
+	-fx-background-color: #ED3029;
+	-fx-text-fill: #ffffff;
+	-fx-background-radius: 0;
+	-fx-text-transform: uppercase;
+	-fx-font-weight: bold;
+	-fx-padding: 5px 14px; 
+}
+.button:hover {
+	-fx-background-color: #EF453E;
+	-fx-text-fill: #ffffff;
+	-fx-background-radius: 0;
+	-fx-text-transform: uppercase;
+	-fx-font-weight: bold;
+	-fx-padding: 5px 14px; 
+}
