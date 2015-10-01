@@ -4,7 +4,7 @@ A tool for users to universally manage and explore the League Of Legends cache.
 
 #Features
 * Cache Explorer
-..* Explore the entire packed cache files.
+⋅⋅* Explore the entire packed cache files.
 * File Interaction
 ..* Export & replace files in the cache.
 ..* Raw Interaction
