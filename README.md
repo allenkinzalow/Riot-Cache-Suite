@@ -13,3 +13,8 @@ A tool for users to universally manage and explore the League Of Legends cache.
   * View a visual for the file type if possible(view rendered model for model file(s)).
  * View archive release history.
  * View raw data for the file itself(size, offset, hash, etc..)
+
+#Current TO-DO:
+* Enhance README
+* Setup WiKi
+* Setup http://raf.gg
