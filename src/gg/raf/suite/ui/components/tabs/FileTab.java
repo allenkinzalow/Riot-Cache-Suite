@@ -1,9 +1,13 @@
 package gg.raf.suite.ui.components.tabs;
 
 import gg.raf.suite.fs.file.RiotFile;
+import gg.raf.suite.fs.file.RiotFileType;
 import gg.raf.suite.ui.RAFApplication;
 import gg.raf.suite.ui.controller.file.FileTabController;
+import gg.raf.suite.ui.controller.file.dds.DDSRawController;
+import gg.raf.suite.ui.controller.file.dds.DDSViewController;
 import gg.raf.suite.ui.layouts.Layout;
+import gg.raf.suite.ui.models.file.dds.DDSModel;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
@@ -36,6 +40,11 @@ public class FileTab extends Tab {
     private String path;
 
     /**
+     * The file type based on path extension.
+     */
+    private RiotFileType fileType;
+
+    /**
      * This tab's controller.
      */
     private FileTabController controller;
@@ -48,6 +57,7 @@ public class FileTab extends Tab {
         super(name);
         this.file = file;
         this.path = path;
+        this.fileType = RiotFileType.typeForExtension(path.substring(path.lastIndexOf('.') + 1, path.length()));
         this.openFile = file.get(file.keySet().toArray()[file.size() - 1]);
         this.format = new DecimalFormat("###,###,###");
         try {
@@ -61,6 +71,7 @@ public class FileTab extends Tab {
             this.updateFileData();
             this.initializeArchiveList();
             this.setButtonEvents();
+            this.setupRawViewTabs();
             this.setContent(pane);
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,6 +118,38 @@ public class FileTab extends Tab {
                 }
             });
             controller.getArchiveList().getSelectionModel().selectLast();
+        }
+    }
+
+    /**
+     * Setup the two different file interaction tabs.
+     */
+    private void setupRawViewTabs() {
+        if(fileType == null)
+            return;
+        try {
+            switch (fileType) {
+                case DDS:
+                    DDSRawController rawController = new DDSRawController();
+                    FXMLLoader fxmlLoader = new FXMLLoader(Layout.class.getResource("dds_raw_layout.fxml"));
+                    fxmlLoader.setController(rawController);
+                    AnchorPane rawPane = fxmlLoader.load();
+
+                    DDSViewController viewController = new DDSViewController();
+                    FXMLLoader viewLoader = new FXMLLoader(Layout.class.getResource("dds_view_layout.fxml"));
+                    viewLoader.setController(viewController);
+                    AnchorPane viewPane = viewLoader.load();
+
+                    DDSModel model = new DDSModel(rawController, viewController);
+                    model.setFile(this.openFile);
+                    model.initialize();
+
+                    this.controller.getRawTab().setContent(rawPane);
+                    this.controller.getViewTab().setContent(viewPane);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

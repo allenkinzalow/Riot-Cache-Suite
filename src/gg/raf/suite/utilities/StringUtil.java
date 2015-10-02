@@ -25,4 +25,20 @@ public final class StringUtil {
         return new String(str, 0, len - 1);
     }
 
+    /**
+     * Convert an integer to a string based on its binary value.
+     * @param value
+     * @return
+     */
+    public static final String intToString(int value) {
+        StringBuffer buf = new StringBuffer();
+
+        buf.append((char) (value & 0xFF));
+        buf.append((char) ((value & 0xFF00) >> 8));
+        buf.append((char) ((value & 0xFF0000) >> 16));
+        buf.append((char) ((value & 0xFF00000) >> 24));
+
+        return buf.toString();
+    }
+
 }

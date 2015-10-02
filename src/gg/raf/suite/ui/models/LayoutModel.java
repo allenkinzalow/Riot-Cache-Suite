@@ -1,7 +1,6 @@
 package gg.raf.suite.ui.models;
 
 import gg.raf.suite.ui.components.treeview.CacheTreeView;
-import gg.raf.suite.ui.controller.Controller;
 import gg.raf.suite.ui.controller.LayoutController;
 
 import java.util.ArrayList;

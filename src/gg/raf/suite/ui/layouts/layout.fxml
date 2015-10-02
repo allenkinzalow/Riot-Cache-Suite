@@ -15,17 +15,24 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem mnemonicParsing="false" style="" text="Close" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Delete" />
+            <MenuItem mnemonicParsing="false" text="Replace" />
+            <MenuItem mnemonicParsing="false" text="Export" />
+            <MenuItem mnemonicParsing="false" text="Export All..." />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Search..." />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <Menu mnemonicParsing="false" text="Settings">
+              <items>
+                <CheckMenuItem mnemonicParsing="false" text=".DDS -&gt; .png" />
+              </items>
+            </Menu>
+            <MenuItem mnemonicParsing="false" text="Exit" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
             <MenuItem mnemonicParsing="false" text="About" />
+            <MenuItem mnemonicParsing="false" text="Check for update..." />
           </items>
         </Menu>
       </menus>

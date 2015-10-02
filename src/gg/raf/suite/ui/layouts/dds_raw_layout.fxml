@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #191919;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+    <children>
+        <Label layoutX="14.0" layoutY="15.0" text="Width:" textFill="WHITE">
+            <font>
+                <Font size="15.0" fx:id="x2" />
+            </font>
+        </Label>
+        <Label font="$x2" layoutX="14.0" layoutY="40.0" text="Height:" textFill="WHITE" />
+        <Label font="$x2" layoutX="14.0" layoutY="65.0" text="Mipmap Count:" textFill="WHITE" />
+        <Label font="$x2" layoutX="14.0" layoutY="90.0" text="FourCC:" textFill="WHITE" />
+        <Label font="$x2" layoutX="14.0" layoutY="115.0" text="RGBBitCount:" textFill="WHITE" />
+        <Label font="$x2" layoutX="14.0" layoutY="140.0" text="R Bit Mask:" textFill="WHITE" />
+        <Label font="$x2" layoutX="14.0" layoutY="165.0" text="G Bit Mask:" textFill="WHITE" />
+        <Label font="$x2" layoutX="14.0" layoutY="190.0" text="B Bit Mask:" textFill="WHITE" />
+        <Label fx:id="width" font="$x2" layoutX="190.0" layoutY="15.0" text="0" textFill="WHITE" />
+        <Label fx:id="height" font="$x2" layoutX="190.0" layoutY="40.0" text="0" textFill="WHITE" />
+        <Label fx:id="mipMapCount" font="$x2" layoutX="190.0" layoutY="65.0" text="0" textFill="WHITE" />
+        <Label fx:id="fourCC" font="$x2" layoutX="190.0" layoutY="90.0" text="0" textFill="WHITE" />
+        <Label fx:id="rgbBitCount" font="$x2" layoutX="190.0" layoutY="115.0" text="0" textFill="WHITE" />
+        <Label fx:id="rBitMask" font="$x2" layoutX="190.0" layoutY="140.0" text="0" textFill="WHITE" />
+        <Label fx:id="gBitMask" font="$x2" layoutX="190.0" layoutY="165.0" text="0" textFill="WHITE" />
+        <Label fx:id="bBitMask" font="$x2" layoutX="190.0" layoutY="190.0" text="0" textFill="WHITE" />
+        <Button fx:id="savePngButton" layoutX="14.0" layoutY="368.0" mnemonicParsing="false" text="Save As PNG" />
+        <Label font="$x2" layoutX="14.0" layoutY="215.0" text="A Bit Mask:" textFill="WHITE" />
+        <Label fx:id="aBitMask" font="$x2" layoutX="190.0" layoutY="215.0" text="0" textFill="WHITE" />
+    </children>
+</AnchorPane>

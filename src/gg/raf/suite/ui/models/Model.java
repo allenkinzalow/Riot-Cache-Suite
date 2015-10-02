@@ -1,5 +1,6 @@
 package gg.raf.suite.ui.models;
 
+import gg.raf.suite.fs.file.RiotFile;
 import gg.raf.suite.ui.controller.Controller;
 import javafx.scene.layout.AnchorPane;
 
@@ -12,14 +13,14 @@ public abstract class Model<T extends Controller> {
     /**
      * The controller attached to this model.
      */
-    private T controller;
+    private T[] controllers;
 
     /**
-     * Construct a model with a given controller.
-     * @param controller
+     * Construct a model with a set of controllers.
+     * @param controllers
      */
-    public Model(T controller) {
-        this.controller = controller;
+    public Model(T ... controllers) {
+        this.controllers = controllers;
     }
 
     /**
@@ -32,8 +33,16 @@ public abstract class Model<T extends Controller> {
      * Retrieve the controller.
      * @return
      */
+    public T[] getControllers() {
+        return controllers;
+    }
+
+    /**
+     * Get the first controller.
+     * @return
+     */
     public T getController() {
-        return controller;
+        return controllers[0];
     }
 
 }

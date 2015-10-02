@@ -1,6 +1,7 @@
 package gg.raf.suite.fs.file;
 
 import java.io.*;
+import java.util.Arrays;
 
 /**
  * Created by Allen Kinzalow on 9/24/2015.
@@ -43,6 +44,14 @@ public class RiotFile {
         this.dataSize = dataSize;
         this.pathListIndex = pathListIndex;
         this.fileData = new byte[this.dataSize];
+    }
+
+    public RiotFile(RiotFile file) {
+        this.hash = file.getHash();
+        this.dataOffset = file.getDataOffset();
+        this.dataSize = file.getDataSize();
+        this.pathListIndex = file.getPathListIndex();
+        this.fileData = Arrays.copyOf(file.getFileData(), file.getFileData().length);
     }
 
     /**
@@ -111,6 +120,26 @@ public class RiotFile {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public long hash(String path) {
+        System.out.println("Path: " + path);
+        path = path.trim().toLowerCase();
+        long hash = 0;
+        long temp;
+        int count = 1;
+        for(char c : path.toCharArray()) {
+            System.out.println("--Step: " + count);
+            hash = (hash << 4) + c;
+            temp = hash & 0xf0000000;
+            System.out.println("---Hash: " + hash + " Temp: " + temp);
+            if(temp != 0) {
+                hash = hash ^ (temp >> 24);
+                hash = hash ^ temp;
+            }
+            count++;
+        }
+        return hash;
     }
 
 }

@@ -3,6 +3,7 @@ package gg.raf.suite.ui.components.treeview;
 import gg.raf.suite.RAFSuite;
 import gg.raf.suite.fs.archive.ArchiveFile;
 import gg.raf.suite.fs.file.RiotFile;
+import gg.raf.suite.fs.file.RiotFileType;
 import gg.raf.suite.fs.file.RiotPath;
 import gg.raf.suite.ui.components.tabs.FileTab;
 import gg.raf.suite.ui.models.LayoutModel;
@@ -126,7 +127,7 @@ public class CacheTreeView {
                                 ArchiveFile archive = new ArchiveFile(new File(RAFSuite.FILE_PATH + releasePath));
                                 archive.initiate();
                                 archive.getArchiveDataFile().initiate();
-                                file.put(releasePath, archive.getArchiveDataFile().getFileForPathIndex(archive.getPathIndex(path)));
+                                file.put(releasePath, RiotFileType.wrapFileType(path, archive.getArchiveDataFile().getFileForPathIndex(archive.getPathIndex(path))));
                             }
                             final FileTab tab = new FileTab(clicked.getValue(), path, file);
                             tab.setOnClosed(e -> model.getFileMap().remove(path));
@@ -155,7 +156,6 @@ public class CacheTreeView {
         TreeItem<String> parent = leaf;
         while((parent = parent.getParent()) != null && (!parent.getValue().equalsIgnoreCase("cache directories"))) {
             path = parent.getValue() + "/" + path;
-            System.out.println("Path: " + path);
         }
         return path;
     }
