@@ -1,16 +1,23 @@
 package gg.raf.suite.fs.file.dds;
 
 import gg.raf.suite.fs.file.RiotFile;
+import gg.raf.suite.fs.file.dds.decompressor.DXT1Decompressor;
+import gg.raf.suite.fs.file.dds.decompressor.DXT3Decompressor;
+import gg.raf.suite.fs.file.dds.decompressor.DXT5Decompressor;
+import gg.raf.suite.fs.file.dds.decompressor.Decompressor;
 import gg.raf.suite.fs.file.dds.flags.DDSCaps2Flags;
 import gg.raf.suite.fs.file.dds.flags.DDSCapsFlags;
 import gg.raf.suite.fs.file.dds.flags.DDSHeaderFlags;
 import gg.raf.suite.fs.file.dds.flags.DDSPixelFormatFlags;
 import gg.raf.suite.utilities.StringUtil;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.WritableImage;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.EXTTextureCompressionS3TC;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
+import java.awt.image.BufferedImage;
 import java.io.IOError;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -38,8 +45,15 @@ public class DDSFile extends RiotFile {
     /**
      * FourCC constants.
      */
+    /**
+     * Three color channels 5:6:5 with 0 or 1 bits of alpha
+     */
     private static final int PF_DXT1 = 0x31545844;
     private static final int PF_DXT3 = 0x33545844;
+
+    /**
+     * Three color channels 5:6:5 with 8 bits alpha
+     */
     private static final int PF_DXT5 = 0x35545844;
 
     /**
@@ -73,9 +87,9 @@ public class DDSFile extends RiotFile {
     private DDSFormat format;
 
     /**
-     * The pixel buffer.
+     * The result of the dds decoding.
      */
-    private ByteBuffer pixelBuffer;
+    private BufferedImage result;
 
     public DDSFile(int hash, int dataOffset, int dataSize, int pathListIndex) {
         super(hash, dataOffset, dataSize, pathListIndex);
@@ -127,7 +141,7 @@ public class DDSFile extends RiotFile {
                     case PF_DXT1:
                         pfm.setDwRGBBitCount(4);
                         if (pfm.getFlags().contains(DDSPixelFormatFlags.DDPF_ALPHAPIXELS))
-                            format = DDSFormat.DXT1A;
+                            format = DDSFormat.DXT1;
                         else
                             format = DDSFormat.DXT1;
                         break;
@@ -148,6 +162,7 @@ public class DDSFile extends RiotFile {
                         System.out.println("Unexpected Pitch Size: " + ddsHeader.getDwPitchOrLinearSize() + " Expected: " + size);
                 }
             } else {
+                System.out.println("Type: Uncompressed RGB");
                 compressed = false;
                 buffer.getInt();
                 pfm.setDwRGBBitCount(buffer.getInt());
@@ -207,32 +222,23 @@ public class DDSFile extends RiotFile {
 
             populateMipmapSizes();
 
-            int blocksize = 16;
-            int size = ((ddsHeader.getDwWidth() + 3)/4) * ((ddsHeader.getDwHeight() + 3)/4) * blocksize;
-            int format = EXTTextureCompressionS3TC.GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-            load2DTexture(buffer, size, format, blocksize);
+            //TODO: parse the compressed or uncompressed pixel data.
+            //max(1, ( (width + 3) / 4 ) ) x max(1, ( (height + 3) / 4 ) ) x 8(DXT1) or 16(DXT2-5)
+            Decompressor decompressor = format == DDSFormat.DXT3 ? new DXT3Decompressor() : format == DDSFormat.DXT1 ? new DXT1Decompressor() :
+                    format == DDSFormat.DXT5 ? new DXT5Decompressor() : null;
+            int blockSize = format == DDSFormat.DXT1 ? 8 : 16;
+            int pitch = Math.max(1, (ddsHeader.getDwWidth() + 3) / 4) * blockSize;
+            String sFormat = format == DDSFormat.DXT1 ? "DXT1" : format == DDSFormat.DXT3 ? "DXT3" : format == DDSFormat.DXT5 ? "DXT5" : "Uknown";
+            int expectedSize = Math.max(1, (ddsHeader.getDwWidth() + 3) / 4) * (Math.max(1, (ddsHeader.getDwHeight() + 3) / 4) * blockSize);
+            System.out.println("Buffer: cap: " + buffer.capacity() + " pos: " + buffer.position() + " length: " + buffer.array().length + " Rem: " + (buffer.array().length - buffer.position()));
+            System.out.println("Expected Size: " + expectedSize + " Format: " + sFormat + " Pitch: " + pitch);
+            if(decompressor != null) {
+                this.result = decompressor.decompress(buffer, ddsHeader.getDwWidth(), ddsHeader.getDwHeight());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-    }
-
-    private void load2DTexture(ByteBuffer buffer, int size, int format, int blocksize) {
-        //IntBuffer buff = BufferUtils.createIntBuffer(1);
-        //GL11.glGenTextures(buff); // Create Texture In OpenGL
-        //GL11.glBindTexture(GL11.GL_TEXTURE_2D, buff.get(0));
-        //int dds_compressed_decal_map = buff.get(0);
-
-        ByteBuffer pixBuf = ByteBuffer.wrap(buffer.array(),buffer.position(), buffer.array().length - buffer.position());
-        System.out.println("Expected: " + size + " Actual: " + buffer.array().length + " Position: " + buffer.position());
-        pixBuf.rewind();
-        this.pixelBuffer = pixBuf;
-
-        /*GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-        GL13.glCompressedTexImage2D(GL11.GL_TEXTURE_2D, 0, format, ddsHeader.getDwWidth(), ddsHeader.getDwHeight(), 0, size, pixBuf);*/
     }
 
     /**
@@ -263,7 +269,7 @@ public class DDSFile extends RiotFile {
         return ddsHeader;
     }
 
-    public ByteBuffer getPixelBuffer() {
-        return pixelBuffer;
+    public BufferedImage getResult() {
+        return result;
     }
 }

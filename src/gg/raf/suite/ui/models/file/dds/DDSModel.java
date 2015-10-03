@@ -42,7 +42,7 @@ public class DDSModel extends FileModel<DDSFile> {
         rawController.getbBitMask().setText(this.file.getHeader().getDwPixelFormat().getDwBBitMask() + "");
         rawController.getaBitMask().setText(this.file.getHeader().getDwPixelFormat().getDwABitMask() + "");
 
-        int[] pixels = new int[this.file.getPixelBuffer().array().length];
+        /*int[] pixels = new int[this.file.getPixelBuffer().array().length];
         for(int i = 0; i < pixels.length; i++) {
             pixels[i] = this.file.getPixelBuffer().array()[i];
         }
@@ -53,9 +53,17 @@ public class DDSModel extends FileModel<DDSFile> {
         wImage = SwingFXUtils.toFXImage(image, wImage);
         viewController.getDDSImage().setFitHeight(this.file.getHeader().getDwHeight());
         viewController.getDDSImage().setFitWidth(this.file.getHeader().getDwWidth());
-        viewController.getDDSImage().setImage(wImage);
+        viewController.getDDSImage().setImage(wImage);*/
 
         //viewController.getDDSImage().setImage();
-        System.out.println("Pixel Buffer Size: " + this.file.getPixelBuffer().array().length);
+
+        if(this.file.getResult() != null) {
+            BufferedImage image = this.file.getResult();
+            WritableImage wImage = new WritableImage(this.file.getHeader().getDwWidth(), this.file.getHeader().getDwHeight());
+            wImage = SwingFXUtils.toFXImage(image, wImage);
+            viewController.setMaxWidth(image.getWidth());
+            viewController.setMaxHeight(image.getHeight());
+            viewController.getDDSImage().setImage(wImage);
+        }
     }
 }
