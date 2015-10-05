@@ -15,6 +15,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -32,7 +33,12 @@ public class RAFApplication extends Application {
     /**
      * A universal file chooser.
      */
-    public final static FileChooser CHOOSER = new FileChooser();
+    public final static FileChooser FILE_CHOOSER = new FileChooser();
+
+    /**
+     * A universal directory chooser.
+     */
+    public final static DirectoryChooser DIRECTORY_CHOOSER = new DirectoryChooser();
 
     @Override
     public void start(Stage stage) throws Exception {

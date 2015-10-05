@@ -3,10 +3,12 @@ package gg.raf.suite.ui.components.tabs;
 import gg.raf.suite.fs.file.RiotFile;
 import gg.raf.suite.fs.file.RiotFileType;
 import gg.raf.suite.ui.RAFApplication;
+import gg.raf.suite.ui.controller.LayoutController;
 import gg.raf.suite.ui.controller.file.FileTabController;
 import gg.raf.suite.ui.controller.file.dds.DDSRawController;
 import gg.raf.suite.ui.controller.file.dds.DDSViewController;
 import gg.raf.suite.ui.layouts.Layout;
+import gg.raf.suite.ui.models.file.FileModel;
 import gg.raf.suite.ui.models.file.dds.DDSModel;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -48,18 +50,30 @@ public class FileTab extends Tab {
      * This tab's controller.
      */
     private FileTabController controller;
+
+    /**
+     * The open file model.
+     */
+    private FileModel model;
+
     /**
      * The format for file data.
      */
     private NumberFormat format;
 
-    public FileTab(String name, String path, HashMap<String, RiotFile> file) {
+    /**
+     * A reference to the main application layout.
+     */
+    private LayoutController layout;
+
+    public FileTab(String name, String path, HashMap<String, RiotFile> file, LayoutController layout) {
         super(name);
         this.file = file;
         this.path = path;
         this.fileType = RiotFileType.typeForExtension(path.substring(path.lastIndexOf('.') + 1, path.length()));
         this.openFile = file.get(file.keySet().toArray()[file.size() - 1]);
         this.format = new DecimalFormat("###,###,###");
+        this.layout = layout;
         try {
             /**
              * Initialize the controller and fxml layout.
@@ -73,6 +87,8 @@ public class FileTab extends Tab {
             this.setButtonEvents();
             this.setupRawViewTabs();
             this.setContent(pane);
+            this.setupFileMenuActions();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,11 +110,11 @@ public class FileTab extends Tab {
      */
     private void setButtonEvents() {
         this.controller.getExportButton().setOnMouseClicked(e -> {
-            File file = RAFApplication.CHOOSER.showSaveDialog(RAFApplication.STAGE);
+            File file = RAFApplication.FILE_CHOOSER.showSaveDialog(RAFApplication.STAGE);
             openFile.saveFileData(file);
         });
         this.controller.getReplaceButton().setOnMouseClicked(e -> {
-            File file = RAFApplication.CHOOSER.showOpenDialog(RAFApplication.STAGE);
+            File file = RAFApplication.FILE_CHOOSER.showOpenDialog(RAFApplication.STAGE);
         });
     }
 
@@ -115,6 +131,8 @@ public class FileTab extends Tab {
                 public void handle(MouseEvent event) {
                     openFile = file.get(controller.getArchiveList().getSelectionModel().getSelectedItem());
                     updateFileData();
+                    model.setFile(openFile);
+                    model.initialize();
                 }
             });
             controller.getArchiveList().getSelectionModel().selectLast();
@@ -140,7 +158,7 @@ public class FileTab extends Tab {
                     viewLoader.setController(viewController);
                     AnchorPane viewPane = viewLoader.load();
 
-                    DDSModel model = new DDSModel(rawController, viewController);
+                    model = new DDSModel(rawController, viewController);
                     model.setFile(this.openFile);
                     model.initialize();
 
@@ -151,6 +169,18 @@ public class FileTab extends Tab {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setupFileMenuActions() {
+        this.layout.getReplaceMenuButton().setDisable(false);
+        this.layout.getExportMenuButton().setDisable(false);
+        this.layout.getReplaceMenuButton().setOnAction(event -> {
+            File file = RAFApplication.FILE_CHOOSER.showOpenDialog(RAFApplication.STAGE);
+        });
+        this.layout.getExportMenuButton().setOnAction(event -> {
+            File file = RAFApplication.FILE_CHOOSER.showSaveDialog(RAFApplication.STAGE);
+            openFile.saveFileData(file);
+        });
     }
 
 }

@@ -1,8 +1,12 @@
 package gg.raf.suite.ui.models;
 
+import gg.raf.suite.tasks.ExportCache;
+import gg.raf.suite.tasks.TaskExecutor;
+import gg.raf.suite.ui.RAFApplication;
 import gg.raf.suite.ui.components.treeview.CacheTreeView;
 import gg.raf.suite.ui.controller.LayoutController;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,6 +46,12 @@ public class LayoutModel extends Model<LayoutController> {
         cacheTreeView = new CacheTreeView(this.getController().getCacheTree(), this);
         cacheTreeView.populateTree();
         cacheTreeView.setDirectoryEvent();
+        this.getController().getReplaceMenuButton().setDisable(true);
+        this.getController().getExportMenuButton().setDisable(true);
+        this.getController().getExportAllMenuButton().setOnAction(event -> {
+            File file = RAFApplication.DIRECTORY_CHOOSER.showDialog(RAFApplication.STAGE);
+            TaskExecutor.executor.submit(new ExportCache(file, this.getController().getLogger()));
+        });
     }
 
     /**

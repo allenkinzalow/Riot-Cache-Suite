@@ -129,7 +129,7 @@ public class CacheTreeView {
                                 archive.getArchiveDataFile().initiate();
                                 file.put(releasePath, RiotFileType.wrapFileType(path, archive.getArchiveDataFile().getFileForPathIndex(archive.getPathIndex(path))));
                             }
-                            final FileTab tab = new FileTab(clicked.getValue(), path, file);
+                            final FileTab tab = new FileTab(clicked.getValue(), path, file, model.getController());
                             tab.setOnClosed(e -> model.getFileMap().remove(path));
 
                             model.getController().getFileTabs().getTabs().add(tab);

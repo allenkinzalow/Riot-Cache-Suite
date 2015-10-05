@@ -1,9 +1,8 @@
 package gg.raf.suite.tasks;
 
-import gg.raf.suite.RAFConfig;
 import gg.raf.suite.RAFSuite;
 import gg.raf.suite.fs.archive.ArchiveFile;
-import gg.raf.suite.ui.RAFApplication;
+import javafx.scene.control.TextArea;
 
 import java.io.File;
 
@@ -12,19 +11,34 @@ import java.io.File;
  */
 public class ExportCache implements Runnable {
 
+    /**
+     * The directory to write the cache to.
+     */
+    private File chosenDir;
+
+    /**
+     * A reference to the logger.
+     */
+    private TextArea logger;
+
+    public ExportCache(File file, TextArea logger) {
+        this.chosenDir = file;
+        this.logger = logger;
+    }
+
     @Override
     public void run() {
         try {
             File directory = new File(RAFSuite.FILE_PATH);
-            String out = "C:/Users/allen_000/Desktop/League Cache/5.19/";
             for (File file : directory.listFiles()) {
+                String path = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf('\\') + 1, file.getAbsolutePath().length());
                 for (final File subFile : file.listFiles()) {
                     if (subFile.getName().endsWith(".raf")) {
-                        System.out.println("Writing: " + subFile.getAbsolutePath());
+                        logger.appendText("\nWriting Archive: " + path);
                         ArchiveFile archiveFile = new ArchiveFile(subFile);
                         archiveFile.initiate();
                         archiveFile.getArchiveDataFile().initiate();
-                        archiveFile.writeArchive(out);
+                        archiveFile.writeArchive(chosenDir.getAbsolutePath() + "\\");
 
                     }
                 }

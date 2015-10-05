@@ -50,8 +50,6 @@ public class RAFSuite {
      */
     public static void main(String[] args) {
         try {
-            /*ExecutorService service = Executors.newCachedThreadPool();
-            service.submit(new ExportCache());*/
             /**
              * Launch the user interface.
              */

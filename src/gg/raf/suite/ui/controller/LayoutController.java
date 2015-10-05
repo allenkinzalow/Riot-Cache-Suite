@@ -20,6 +20,13 @@ public class LayoutController extends Controller  {
     @FXML private TextArea logger;
     @FXML private TabPane fileTabs;
     @FXML private Label currentAction;
+    @FXML private MenuItem replaceMenuButton;
+    @FXML private MenuItem exportMenuButton;
+    @FXML private MenuItem exportAllMenuButton;
+    @FXML private MenuItem searchMenuButton;
+    @FXML private MenuItem ddsPngCheckButton;
+    @FXML private MenuItem aboutButton;
+    @FXML private MenuItem checkUpdateButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) { }
@@ -57,4 +64,31 @@ public class LayoutController extends Controller  {
         return currentAction;
     }
 
+    public MenuItem getReplaceMenuButton() {
+        return replaceMenuButton;
+    }
+
+    public MenuItem getExportMenuButton() {
+        return exportMenuButton;
+    }
+
+    public MenuItem getSearchMenuButton() {
+        return searchMenuButton;
+    }
+
+    public MenuItem getExportAllMenuButton() {
+        return exportAllMenuButton;
+    }
+
+    public MenuItem getDdsPngCheckButton() {
+        return ddsPngCheckButton;
+    }
+
+    public MenuItem getAboutButton() {
+        return aboutButton;
+    }
+
+    public MenuItem getCheckUpdateButton() {
+        return checkUpdateButton;
+    }
 }

@@ -15,15 +15,15 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem mnemonicParsing="false" text="Replace" />
-            <MenuItem mnemonicParsing="false" text="Export" />
-            <MenuItem mnemonicParsing="false" text="Export All..." />
+            <MenuItem fx:id="replaceMenuButton" mnemonicParsing="false" text="Replace" />
+            <MenuItem fx:id="exportMenuButton" mnemonicParsing="false" text="Export" />
+            <MenuItem fx:id="exportAllMenuButton" mnemonicParsing="false" text="Export All..." />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Search..." />
+            <MenuItem fx:id="searchMenuButton" mnemonicParsing="false" text="Search..." />
             <SeparatorMenuItem mnemonicParsing="false" />
             <Menu mnemonicParsing="false" text="Settings">
               <items>
-                <CheckMenuItem mnemonicParsing="false" text=".DDS -&gt; .png" />
+                <CheckMenuItem fx:id="ddsPngCheckButton" mnemonicParsing="false" text=".DDS -&gt; .png" />
               </items>
             </Menu>
             <MenuItem mnemonicParsing="false" text="Exit" />
@@ -31,8 +31,8 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
-            <MenuItem mnemonicParsing="false" text="About" />
-            <MenuItem mnemonicParsing="false" text="Check for update..." />
+            <MenuItem fx:id="aboutButton" mnemonicParsing="false" text="About" />
+            <MenuItem fx:id="checkUpdateButton" mnemonicParsing="false" text="Check for update..." />
           </items>
         </Menu>
       </menus>
