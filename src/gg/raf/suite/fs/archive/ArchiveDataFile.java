@@ -1,10 +1,12 @@
 package gg.raf.suite.fs.archive;
 
 import gg.raf.suite.fs.file.RiotFile;
+import gg.raf.suite.tasks.ExportCache;
 
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 /**
@@ -34,6 +36,11 @@ public class ArchiveDataFile {
      * when its created.
      */
     private boolean initiated = false;
+
+    /**
+     * Size of uncompressed data.
+     */
+    private int uncompressedSize = 0;
 
     /**
      * Construct a riot archive data file instance with a given
@@ -82,15 +89,84 @@ public class ArchiveDataFile {
                         bos.write(tmp, 0, size);
                     }
                     byte[] uncompressed = bos.toByteArray();
+                    uncompressedSize += uncompressed.length;
                     bos.close();
                     fileEntry.setFileData(uncompressed);
+                    fileEntry.setCompressed(true);
                 } catch (Exception e){
                     fileEntry.setFileData(entryData);
+                    fileEntry.setCompressed(false);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean addFile(int hash, File file) {
+        int fileIndex = getFileIndexForHash(hash);
+        RiotFile toReplace = fileEntries.get(fileIndex);
+        if(toReplace != null) {
+            byte[] fileData = new byte[(int)file.length()];
+            byte[] compressed = null;
+            try {
+                DataInputStream is = new DataInputStream(new FileInputStream(file));
+                is.readFully(fileData);
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                Deflater deflater = new Deflater();
+                deflater.setInput(fileData);
+                byte[] tmp = new byte[1024];
+                int size = deflater.deflate(tmp);
+                bos.write(tmp, 0, size);
+                compressed = bos.toByteArray();
+                bos.close();
+                if(compressed == null || compressed.length == 0)
+                    return false;
+                int sizeOffset = fileData.length - toReplace.getFileData().length;
+                toReplace.setDataOffset(toReplace.getDataOffset() + sizeOffset);
+                toReplace.setDataSize(compressed.length);
+                toReplace.setFileData(fileData);
+                for(int i = fileIndex + 1; i < fileEntries.size(); i++) {
+                    RiotFile fil = fileEntries.get(i);
+                    fil.setDataOffset(fil.getDataOffset() + sizeOffset);
+                }
+
+                ByteBuffer buffer = ByteBuffer.allocate(uncompressedSize + sizeOffset);
+                for(RiotFile rf : fileEntries) {
+                    bos = new ByteArrayOutputStream();
+                    deflater.setInput(rf.getFileData());
+                    tmp = new byte[rf.getFileData().length];
+                    size = deflater.deflate(tmp);
+                    bos.write(tmp, 0, size);
+                    System.out.println("Pos: " + buffer.position() + " Cap: " + buffer.capacity() + " bos: " + bos.toByteArray().length + " Size: " + rf.getDataSize());
+                    buffer.put(bos.toByteArray(), rf.getDataOffset(), rf.getDataSize());
+                }
+
+                dataFile.write(buffer.array());
+                bos.close();
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get a file for its hash.
+     * @param hash
+     * @return
+     */
+    public int getFileIndexForHash(int hash) {
+        for(int i = 0; i < fileEntries.size(); i++) {
+            RiotFile file = fileEntries.get(i);
+            if (file != null && file.getHash() == hash)
+                return i;
+        }
+        return -1;
     }
 
     /**

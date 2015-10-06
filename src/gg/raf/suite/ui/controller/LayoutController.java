@@ -27,6 +27,7 @@ public class LayoutController extends Controller  {
     @FXML private MenuItem ddsPngCheckButton;
     @FXML private MenuItem aboutButton;
     @FXML private MenuItem checkUpdateButton;
+    @FXML private MenuItem exitButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) { }
@@ -90,5 +91,9 @@ public class LayoutController extends Controller  {
 
     public MenuItem getCheckUpdateButton() {
         return checkUpdateButton;
+    }
+
+    public MenuItem getExitButton() {
+        return exitButton;
     }
 }

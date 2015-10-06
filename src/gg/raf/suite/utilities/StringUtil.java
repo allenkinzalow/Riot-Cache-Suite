@@ -26,6 +26,19 @@ public final class StringUtil {
     }
 
     /**
+     * Write a string to the buffer.
+     * @param buffer
+     * @param s
+     */
+    public static void writeString(ByteBuffer buffer, String s) {
+        byte[] data = s.getBytes();
+        for(byte b : data) {
+            buffer.put(b);
+        }
+        buffer.put((byte)0);
+    }
+
+    /**
      * Convert an integer to a string based on its binary value.
      * @param value
      * @return

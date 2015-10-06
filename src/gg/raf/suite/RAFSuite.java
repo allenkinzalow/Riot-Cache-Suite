@@ -9,6 +9,7 @@ import gg.raf.suite.fs.file.RiotPath;
 import gg.raf.suite.tasks.ExportCache;
 import gg.raf.suite.ui.RAFApplication;
 import javafx.application.Application;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.TreeMap;
@@ -36,13 +37,24 @@ import java.util.concurrent.Executors;
  * RAFSuite
  *  This class is the beginning of the program that handles all necessary
  *      tasks before initializing the suite.
+ *  This class acts as a modifier for the RAFApplication class in order to contain
+ *      an instance of it.
  */
-public class RAFSuite {
+public class RAFSuite extends Application {
 
     /**
      * The default file path for riot game client archive releases.
      */
     public final static String FILE_PATH = "C:/Riot Games/League of Legends/RADS/projects/lol_game_client/filearchives/";
+
+    public RAFApplication application;
+
+    /**
+     *
+     */
+    public RAFSuite() {
+        application = new RAFApplication();
+    }
 
     /**
      * The beginning of everything ;)
@@ -53,10 +65,15 @@ public class RAFSuite {
             /**
              * Launch the user interface.
              */
-            Application.launch(RAFApplication.class);
+            launch(args);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        application.start(primaryStage);
     }
 
 }

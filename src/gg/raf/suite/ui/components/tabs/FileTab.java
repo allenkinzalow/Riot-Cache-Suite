@@ -1,5 +1,7 @@
 package gg.raf.suite.ui.components.tabs;
 
+import gg.raf.suite.RAFSuite;
+import gg.raf.suite.fs.archive.ArchiveFile;
 import gg.raf.suite.fs.file.RiotFile;
 import gg.raf.suite.fs.file.RiotFileType;
 import gg.raf.suite.ui.RAFApplication;
@@ -111,10 +113,26 @@ public class FileTab extends Tab {
     private void setButtonEvents() {
         this.controller.getExportButton().setOnMouseClicked(e -> {
             File file = RAFApplication.FILE_CHOOSER.showSaveDialog(RAFApplication.STAGE);
+            if(file == null)
+                return;
             openFile.saveFileData(file);
         });
         this.controller.getReplaceButton().setOnMouseClicked(e -> {
             File file = RAFApplication.FILE_CHOOSER.showOpenDialog(RAFApplication.STAGE);
+            if(file == null)
+                return;
+            /**
+             * Disabled temporarily.
+             */
+            /*try {
+                ArchiveFile archive = new ArchiveFile(new File(RAFSuite.FILE_PATH + "" + controller.getArchiveList().getSelectionModel().getSelectedItem()));
+                archive.initiate();
+                archive.getArchiveDataFile().initiate();
+                if(archive.getArchiveDataFile().addFile(this.openFile.getHash(), file))
+                    archive.encodeArchive();
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }*/
         });
     }
 
@@ -176,6 +194,7 @@ public class FileTab extends Tab {
         this.layout.getExportMenuButton().setDisable(false);
         this.layout.getReplaceMenuButton().setOnAction(event -> {
             File file = RAFApplication.FILE_CHOOSER.showOpenDialog(RAFApplication.STAGE);
+
         });
         this.layout.getExportMenuButton().setOnAction(event -> {
             File file = RAFApplication.FILE_CHOOSER.showSaveDialog(RAFApplication.STAGE);

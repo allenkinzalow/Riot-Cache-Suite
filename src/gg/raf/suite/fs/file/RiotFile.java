@@ -38,6 +38,11 @@ public class RiotFile {
      */
     private byte[] fileData;
 
+    /**
+     * Was the file compressed?
+     */
+    private boolean compressed;
+
     public RiotFile(int hash, int dataOffset, int dataSize, int pathListIndex) {
         this.hash = hash;
         this.dataOffset = dataOffset;
@@ -100,6 +105,38 @@ public class RiotFile {
      */
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
+    }
+
+    /**
+     * Set the data size.
+     * @param dataSize
+     */
+    public void setDataSize(int dataSize) {
+        this.dataSize = dataSize;
+    }
+
+    /**
+     * Set the data offset
+     * @param dataOffset
+     */
+    public void setDataOffset(int dataOffset) {
+        this.dataOffset = dataOffset;
+    }
+
+    /**
+     * Set whether or not the file is compressed.
+     * @param compressed
+     */
+    public void setCompressed(boolean compressed) {
+        this.compressed = compressed;
+    }
+
+    /**
+     * Retrieve if the file was compressed.
+     * @return
+     */
+    public boolean isCompressed() {
+        return compressed;
     }
 
     /**

@@ -26,12 +26,14 @@
                 <CheckMenuItem fx:id="ddsPngCheckButton" mnemonicParsing="false" text=".DDS -&gt; .png" />
               </items>
             </Menu>
-            <MenuItem mnemonicParsing="false" text="Exit" />
+            <MenuItem fx:id="exitButton" mnemonicParsing="false" text="Exit" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
             <MenuItem fx:id="aboutButton" mnemonicParsing="false" text="About" />
+            <MenuItem fx:id="websiteButton" mnemonicParsing="false" text="Website" />
+            <MenuItem fx:id="devBlogButton" mnemonicParsing="false" text="Dev Blog" />
             <MenuItem fx:id="checkUpdateButton" mnemonicParsing="false" text="Check for update..." />
           </items>
         </Menu>

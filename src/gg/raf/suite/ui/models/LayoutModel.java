@@ -52,6 +52,9 @@ public class LayoutModel extends Model<LayoutController> {
             File file = RAFApplication.DIRECTORY_CHOOSER.showDialog(RAFApplication.STAGE);
             TaskExecutor.executor.submit(new ExportCache(file, this.getController().getLogger()));
         });
+        this.getController().getExitButton().setOnAction(event -> {
+            System.exit(0);
+        });
     }
 
     /**

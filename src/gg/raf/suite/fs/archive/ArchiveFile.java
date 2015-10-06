@@ -163,7 +163,7 @@ public class ArchiveFile {
          */
         this.fileListCount = buffer.getInt();
         //System.out.println("File List Count: " + this.fileListCount);
-        for(int fileIndex = 0; fileIndex < this.fileListCount; fileIndex++) {
+        for (int fileIndex = 0; fileIndex < this.fileListCount; fileIndex++) {
             int hash = buffer.getInt();
             int dataOffset = buffer.getInt();
             int dataSize = buffer.getInt();
@@ -177,7 +177,7 @@ public class ArchiveFile {
         int pathStringOffset = buffer.position();
         this.pathListSize = buffer.getInt();
         this.pathListCount = buffer.getInt();
-        for(int pathIndex = 0; pathIndex < pathListCount; pathIndex++) {
+        for (int pathIndex = 0; pathIndex < pathListCount; pathIndex++) {
             int pathOffset = buffer.getInt();
             int pathLength = buffer.getInt();
             //System.out.println("Path Offset: " + pathOffset + " Path Length: " + pathLength);
@@ -186,10 +186,47 @@ public class ArchiveFile {
         /**
          * Read the path strings.
          */
-        for(RiotPath pathEntry : pathEntries) {
+        for (RiotPath pathEntry : pathEntries) {
             buffer.position(pathStringOffset + pathEntry.getPathOffset());
             pathEntry.setString(StringUtil.readString(buffer));
             //System.out.println("Path Offset: " + pathEntry.getPathOffset() + " Path Length: " + pathEntry.getPathLength() + " PLI: " + pathEntries.indexOf(pathEntry) + " Path String: " + pathEntry.getPath());
+        }
+    }
+
+    /**
+     * Encode this archive back to the .raf file
+     */
+    public void encodeArchive() {
+        try {
+            ByteBuffer buffer = ByteBuffer.allocate(999999);
+            buffer.order(ByteOrder.LITTLE_ENDIAN);
+            buffer.putInt(magicNumber);
+            buffer.putInt(version);
+            buffer.putInt(managerIndex);
+            buffer.putInt(fileListOffset);
+            buffer.putInt(pathListOffset);
+
+            buffer.putInt(fileListCount);
+            for (RiotFile file : archiveDataFile.getFileEntries()) {
+                buffer.putInt(file.getHash());
+                buffer.putInt(file.getDataOffset());
+                buffer.putInt(file.getDataSize());
+                buffer.putInt(file.getPathListIndex());
+            }
+
+            buffer.putInt(pathListSize);
+            buffer.putInt(pathListCount);
+            for (RiotPath path : pathEntries) {
+                buffer.putInt(path.getPathOffset());
+                buffer.putInt(path.getPathLength());
+            }
+
+            for (RiotPath path : pathEntries)
+                StringUtil.writeString(buffer, path.getPath());
+
+            riotArchiveFile.write(buffer.array());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
