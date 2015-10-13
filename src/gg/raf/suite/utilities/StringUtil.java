@@ -25,6 +25,13 @@ public final class StringUtil {
         return new String(str, 0, len - 1);
     }
 
+    public static String readString(ByteBuffer buffer, int size) {
+        byte[] str = new byte[size];
+        buffer.get(str, 0, size - 1);
+        buffer.position(buffer.position() + 1);
+        return new String(str, 0 , size - 1);
+    }
+
     /**
      * Write a string to the buffer.
      * @param buffer

@@ -1,13 +1,19 @@
 package gg.raf.suite.fs.file;
 
+import gg.raf.suite.fs.file.anm.AnmFile;
 import gg.raf.suite.fs.file.dds.DDSFile;
+import gg.raf.suite.fs.file.skl.SklFile;
+import gg.raf.suite.fs.file.skn.SknFile;
 
 /**
  * Created by Allen Kinzalow on 10/1/2015.
  */
 public enum RiotFileType {
 
-    DDS("dds");
+    DDS("dds"),
+    ANM("anm"),
+    SKL("skl"),
+    SKN("skn");
 
     private String extension;
 
@@ -20,7 +26,6 @@ public enum RiotFileType {
     }
 
     public static RiotFileType typeForExtension(String extension) {
-        System.out.println("Extension: " + extension);
         for(RiotFileType type : RiotFileType.values())
             if(type.getExtension().equalsIgnoreCase(extension))
                 return type;
@@ -33,8 +38,13 @@ public enum RiotFileType {
             return file;
         switch(type) {
             case DDS:
-                System.out.println("DDS File!");
                 return new DDSFile(file);
+            case ANM:
+                return new AnmFile(file);
+            case SKL:
+                return new SklFile(file);
+            case SKN:
+                return new SknFile(file);
         }
         return file;
     }
