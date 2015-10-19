@@ -6,10 +6,12 @@ import gg.raf.suite.fs.file.RiotFile;
 import gg.raf.suite.fs.file.RiotFileType;
 import gg.raf.suite.ui.RAFApplication;
 import gg.raf.suite.ui.controller.LayoutController;
+import gg.raf.suite.ui.controller.file.DefaultRawController;
 import gg.raf.suite.ui.controller.file.FileTabController;
 import gg.raf.suite.ui.controller.file.dds.DDSRawController;
 import gg.raf.suite.ui.controller.file.dds.DDSViewController;
 import gg.raf.suite.ui.layouts.Layout;
+import gg.raf.suite.ui.models.file.DefaultRawModel;
 import gg.raf.suite.ui.models.file.FileModel;
 import gg.raf.suite.ui.models.file.dds.DDSModel;
 import javafx.event.EventHandler;
@@ -163,13 +165,14 @@ public class FileTab extends Tab {
     private void setupRawViewTabs() {
         if(fileType == null)
             return;
+        FXMLLoader rawFxmlLoader;
         try {
             switch (fileType) {
                 case DDS:
                     DDSRawController rawController = new DDSRawController();
-                    FXMLLoader fxmlLoader = new FXMLLoader(Layout.class.getResource("dds_raw_layout.fxml"));
-                    fxmlLoader.setController(rawController);
-                    AnchorPane rawPane = fxmlLoader.load();
+                    rawFxmlLoader = new FXMLLoader(Layout.class.getResource("dds_raw_layout.fxml"));
+                    rawFxmlLoader.setController(rawController);
+                    AnchorPane rawPane = rawFxmlLoader.load();
 
                     DDSViewController viewController = new DDSViewController();
                     FXMLLoader viewLoader = new FXMLLoader(Layout.class.getResource("dds_view_layout.fxml"));
@@ -177,12 +180,24 @@ public class FileTab extends Tab {
                     AnchorPane viewPane = viewLoader.load();
 
                     model = new DDSModel(rawController, viewController);
-                    model.setFile(this.openFile);
-                    model.initialize();
-
                     this.controller.getRawTab().setContent(rawPane);
                     this.controller.getViewTab().setContent(viewPane);
                     break;
+                case DEFAULT:
+                default:
+                    DefaultRawController defRawController = new DefaultRawController();
+                    rawFxmlLoader = new FXMLLoader(Layout.class.getResource("default_raw_layout.fxml"));
+                    rawFxmlLoader.setController(defRawController);
+                    AnchorPane defRawPane = rawFxmlLoader.load();
+
+                    model = new DefaultRawModel(defRawController);
+                    this.controller.getRawTab().setContent(defRawPane);
+                    this.controller.getViewTab().setDisable(true);
+                    break;
+            }
+            if(model != null) {
+                model.setFile(this.openFile);
+                model.initialize();
             }
         } catch (Exception e) {
             e.printStackTrace();

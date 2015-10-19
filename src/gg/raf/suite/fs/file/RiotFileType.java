@@ -13,7 +13,8 @@ public enum RiotFileType {
     DDS("dds"),
     ANM("anm"),
     SKL("skl"),
-    SKN("skn");
+    SKN("skn"),
+    DEFAULT("");
 
     private String extension;
 
@@ -29,7 +30,7 @@ public enum RiotFileType {
         for(RiotFileType type : RiotFileType.values())
             if(type.getExtension().equalsIgnoreCase(extension))
                 return type;
-        return null;
+        return DEFAULT;
     }
 
     public static RiotFile wrapFileType(String path, RiotFile file) {
