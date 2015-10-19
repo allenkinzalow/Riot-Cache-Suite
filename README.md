@@ -18,3 +18,6 @@ A tool for users to universally manage and explore the League Of Legends cache.
 * Enhance README
 * Setup WiKi
 * Setup http://raf.gg
+
+#Raf.gg
+The website is currently a seperate project itself. There are a number of features I plan for the website to have ranging from a cache explorer to databases for different aspects of the cache. 
