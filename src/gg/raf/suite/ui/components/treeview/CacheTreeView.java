@@ -52,14 +52,10 @@ public class CacheTreeView {
             HashMap<String, TreeItem<String>> dirMap = new HashMap<>(); // directory map
             File directory = new File(RAFSuite.FILE_PATH);
             int count = 0, count1 = 0;
-            ArchiveFile archiveFile = null;
             for (File file : directory.listFiles()) {
                 for (final File subFile : file.listFiles()) {
                     if (subFile.getName().endsWith(".raf")) {
-                        archiveFile = new ArchiveFile(subFile);
-                        archiveFile.initiate();
-                        for (RiotPath path : archiveFile.getPathEntries()) {
-                            String dirs = path.getPath();
+                        for (String dirs  : ArchiveFile.fetchPathList(subFile)) {
                             String id = dirs.substring(0, dirs.lastIndexOf('/') + 1);
                             String[] dir = dirs.split("/");
                             if (!dirMap.containsKey(id)) {
@@ -82,7 +78,8 @@ public class CacheTreeView {
                                 String name = dirs.substring(dirs.lastIndexOf('/') + 1, dirs.length());
                                 TreeItem<String> item = new TreeItem<>(name);
                                 TreeItem<String> parent = dirMap.get(id);
-                                String releasePath = archiveFile.getManifest().getReleaseNumber() + "/" + archiveFile.getManifest().getReleaseName();
+                                String subDir = subFile.getAbsolutePath().substring(0, subFile.getAbsolutePath().lastIndexOf('\\'));
+                                String releasePath = (subDir.substring(subDir.lastIndexOf('\\') + 1, subDir.length())) + "/" + subFile.getName();
                                 parent.getChildren().remove(getItemForValue(parent, name));
                                 /**
                                  * Populate a map for release history of this file.

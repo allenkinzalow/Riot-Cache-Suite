@@ -231,6 +231,42 @@ public class ArchiveFile {
     }
 
     /**
+     * A static method to fetch the path list directly from a given archive file.
+     * @param file
+     * @return
+     */
+    public static ArrayList<String> fetchPathList(File file) {
+        ArrayList<String> pathList = new ArrayList<>();
+        try {
+            RandomAccessFile rf = new RandomAccessFile(file, "rw");
+            byte[] fileData = new byte[(int) rf.length()];
+            rf.readFully(fileData);
+            ByteBuffer buffer = ByteBuffer.wrap(fileData);
+            buffer.order(ByteOrder.LITTLE_ENDIAN);
+            buffer.position(buffer.position() + 16);
+            int pathListOffset = buffer.getInt();
+            buffer.position(pathListOffset);
+
+            /**
+             * Path List decoding
+             */
+            buffer.getInt();
+            int pathListCount = buffer.getInt();
+            for (int pathIndex = 0; pathIndex < pathListCount; pathIndex++) {
+                int pathOffset = buffer.getInt();
+                buffer.getInt();
+                int pos = buffer.position();
+                buffer.position(pathListOffset + pathOffset);
+                pathList.add(StringUtil.readString(buffer));
+                buffer.position(pos);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pathList;
+    }
+
+    /**
      * Retrieve the corresponding archive data file.
      * @return
      */
